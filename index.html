@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <title>教育科技手勢遊戲</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/ml5@latest/dist/ml5.min.js"></script>
+  <meta charset="UTF-8" />
+  <title>手勢答題遊戲</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.8.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ml5@2.3.0/dist/ml5.min.js"></script>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      font-family: sans-serif;
-    }
-    canvas {
-      display: block;
-      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #eee;
+      font-family: "Noto Sans TC", sans-serif;
     }
     #startBtn {
-      margin-top: 12px;
-      font-size: 18px;
+      margin: 20px;
       padding: 10px 20px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    canvas {
+      border: 2px solid #333;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <h2>🎓 教育科技手勢答題遊戲</h2>
-  <button id="startBtn">📸 啟用鏡頭並開始</button>
-  <script src="script.js"></script>
+  <button id="startBtn">開始遊戲</button>
+
+  <script src="sketch.js"></script>
 </body>
 </html>
