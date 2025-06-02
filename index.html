@@ -2,14 +2,27 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
-  <title>測試按鈕</title>
+  <title>啟動攝影機範例</title>
+  <!-- 載入 p5.js 和 DOM 擴充 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+    canvas {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-  <button id="startBtn">按我測試</button>
+  <h1>🎥 點按下方按鈕啟動攝影機</h1>
+  <button id="startBtn">啟動攝影機</button>
 
-  <!-- 這裡一定要放在最後，p5 執行 setup 前才抓得到按鈕 -->
+  <!-- 載入 sketch.js -->
   <script src="sketch.js"></script>
 </body>
 </html>
