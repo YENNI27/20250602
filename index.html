@@ -11,32 +11,55 @@ let video;
 let handpose;
 let predictions = [];
 
+let isCameraOn = false;
+let startButton;
+
 let question = "以下哪一個是學習管理系統（LMS）？";
 let options = ["Zoom", "Moodle", "YouTube"];
-let correctAnswer = 1; // Moodle
+let correctAnswer = 1;
 let selected = -1;
 
 function setup() {
   createCanvas(640, 480);
-  video = createCapture(VIDEO);
+
+  // 加入開始按鈕
+  startButton = createButton("點我開始遊戲 🚀（啟用鏡頭）");
+  startButton.position(10, height + 10);
+  startButton.mousePressed(startCamera);
+}
+
+function startCamera() {
+  video = createCapture(VIDEO, () => {
+    console.log("攝影機啟動");
+  });
   video.size(width, height);
   video.hide();
 
   handpose = ml5.handpose(video, () => {
-    console.log("模型載入完成");
+    console.log("Handpose 模型載入完成");
   });
 
   handpose.on("predict", results => {
     predictions = results;
   });
+
+  isCameraOn = true;
+  startButton.hide(); // 隱藏按鈕
 }
 
 function draw() {
   background(220);
-  image(video, 0, 0, width, height);
 
-  drawQuestion();
-  drawHand();
+  if (isCameraOn) {
+    image(video, 0, 0, width, height);
+    drawQuestion();
+    drawHand();
+  } else {
+    fill(50);
+    textAlign(CENTER, CENTER);
+    textSize(24);
+    text("請點選下方按鈕以啟用鏡頭開始遊戲", width / 2, height / 2);
+  }
 }
 
 function drawQuestion() {
@@ -63,7 +86,7 @@ function drawQuestion() {
 function drawHand() {
   if (predictions.length > 0) {
     let hand = predictions[0];
-    let indexTip = hand.landmarks[8]; // 手指食指的最前端
+    let indexTip = hand.landmarks[8]; // 食指指尖
 
     let x = indexTip[0];
     let y = indexTip[1];
@@ -93,6 +116,10 @@ function drawHand() {
     }
   }
 }
+</script>
+</body>
+</html>
+
 </script>
 </body>
 </html>
