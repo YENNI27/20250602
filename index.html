@@ -2,27 +2,31 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
-  <title>啟動攝影機範例</title>
-  <!-- 載入 p5.js 和 DOM 擴充 -->
+  <title>教育科技手勢互動小遊戲</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.min.js"></script>
+  <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
       text-align: center;
-      background-color: #f0f0f0;
-      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    #startBtn {
+      margin-top: 20px;
+      font-size: 18px;
+      padding: 10px 20px;
     }
     canvas {
-      margin-top: 20px;
+      display: block;
+      margin: 20px auto;
     }
   </style>
 </head>
 <body>
-  <h1>🎥 點按下方按鈕啟動攝影機</h1>
-  <button id="startBtn">啟動攝影機</button>
+  <h1>🎓 教育科技互動小遊戲</h1>
+  <button id="startBtn">點我開始</button>
 
-  <!-- 載入 sketch.js -->
   <script src="sketch.js"></script>
 </body>
 </html>
