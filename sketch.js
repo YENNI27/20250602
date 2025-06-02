@@ -11,18 +11,17 @@ let correctAnswer = 1;
 let selected = -1;
 
 function setup() {
-  createCanvas(640, 480);
+  let cnv = createCanvas(640, 480);
+  cnv.parent(document.body); // 讓 canvas 顯示在頁面中
 
-  // 加入開始按鈕
-  startButton = createButton("點我開始遊戲 🚀（啟用鏡頭）");
-  startButton.position(10, height + 10);
+  // 建立啟動按鈕
+  startButton = createButton("🎥 點我啟動鏡頭開始遊戲");
+  startButton.position(10, height + 20);
   startButton.mousePressed(startCamera);
 }
 
 function startCamera() {
-  video = createCapture(VIDEO, () => {
-    console.log("攝影機啟動");
-  });
+  video = createCapture(VIDEO);
   video.size(width, height);
   video.hide();
 
@@ -35,26 +34,30 @@ function startCamera() {
   });
 
   isCameraOn = true;
-  startButton.hide(); // 隱藏按鈕
+  startButton.hide(); // 避免重複按
 }
 
 function draw() {
-  background(220);
+  background(230);
 
-  if (isCameraOn) {
-    image(video, 0, 0, width, height);
-    drawQuestion();
-    drawHand();
-  } else {
-    fill(50);
+  if (!isCameraOn) {
+    // 提示畫面
+    fill(60);
     textAlign(CENTER, CENTER);
-    textSize(24);
-    text("請點選下方按鈕以啟用鏡頭開始遊戲", width / 2, height / 2);
+    textSize(22);
+    text("請點選下方按鈕來啟用鏡頭", width / 2, height / 2);
+    return;
   }
+
+  // 顯示鏡頭畫面
+  image(video, 0, 0, width, height);
+
+  drawQuestion();
+  drawHand();
 }
 
 function drawQuestion() {
-  fill(0, 150);
+  fill(0, 180);
   rect(20, 20, width - 40, 80, 10);
   fill(255);
   textSize(18);
@@ -91,18 +94,20 @@ function drawHand() {
       let oy = 120 + i * 80;
       let ow = 540;
       let oh = 60;
+
       if (x > ox && x < ox + ow && y > oy && y < oy + oh) {
         selected = i;
         if (i === correctAnswer) {
           fill(0, 255, 0);
           textSize(24);
-          text("答對了！🎉", 250, 400);
+          text("✅ 答對了！", 250, 400);
         } else {
           fill(255, 0, 0);
           textSize(24);
-          text("再試一次", 250, 400);
+          text("❌ 再試一次", 250, 400);
         }
       }
     }
   }
 }
+
