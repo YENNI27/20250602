@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>教育科技手勢互動小遊戲</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.min.js"></script>
   <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
   <style>
     body {
@@ -29,13 +28,51 @@
   <button id="startBtn">點我開始遊戲</button>
 
   <script>
-    // 綁定按鈕事件
+    let video;
+    let handpose;
+    let predictions = [];
+    let isCameraOn = false;
+
     document.getElementById("startBtn").addEventListener("click", () => {
       console.log("遊戲開始！");
-      // 在這裡啟動遊戲邏輯
+      startCamera();
       document.getElementById("startBtn").style.display = "none"; // 隱藏按鈕
     });
+
+    function setup() {
+      createCanvas(640, 480).parent(document.body);
+    }
+
+    function startCamera() {
+      video = createCapture(VIDEO, () => {
+        console.log("攝影機啟動");
+      });
+      video.size(width, height);
+      video.hide();
+
+      handpose = ml5.handpose(video, () => {
+        console.log("Handpose 模型載入完成");
+      });
+
+      handpose.on("predict", results => {
+        predictions = results;
+      });
+
+      isCameraOn = true;
+    }
+
+    function draw() {
+      background(220);
+
+      if (isCameraOn) {
+        image(video, 0, 0, width, height);
+      } else {
+        fill(50);
+        textAlign(CENTER, CENTER);
+        textSize(24);
+        text("請點選下方按鈕以啟用鏡頭開始遊戲", width / 2, height / 2);
+      }
+    }
   </script>
-  <script src="sketch.js"></script>
 </body>
 </html>
