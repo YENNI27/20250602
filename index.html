@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>教育科技手勢互動小遊戲</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.min.js"></script>
@@ -27,6 +28,14 @@
   <h1>🎓 教育科技互動遊戲</h1>
   <button id="startBtn">點我開始遊戲</button>
 
+  <script>
+    // 綁定按鈕事件
+    document.getElementById("startBtn").addEventListener("click", () => {
+      console.log("遊戲開始！");
+      // 在這裡啟動遊戲邏輯
+      document.getElementById("startBtn").style.display = "none"; // 隱藏按鈕
+    });
+  </script>
   <script src="sketch.js"></script>
 </body>
 </html>
