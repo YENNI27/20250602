@@ -2,57 +2,50 @@ let video;
 let handpose;
 let predictions = [];
 
-let isCameraOn = false;
-let startButton;
-
 let question = "以下哪一個是學習管理系統（LMS）？";
 let options = ["Zoom", "Moodle", "YouTube"];
-let correctAnswer = 1;
+let correctIndex = 1;
 let selected = -1;
 
-function setup() {
-  const cnv = createCanvas(640, 480);
-  cnv.parent(document.body);
+let isStarted = false;
 
-  // 建立按鈕
-  startButton = createButton("📸 啟用鏡頭並開始遊戲");
-  startButton.position(10, height + 20);
-  startButton.mousePressed(startCamera);
+function setup() {
+  let canvas = createCanvas(640, 480);
+  canvas.parent(document.body);
+  noLoop(); // 先暫停繪圖，直到按下按鈕後才開始
+
+  const btn = select("#startBtn");
+  btn.mousePressed(startGame);
 }
 
-function startCamera() {
-  video = createCapture(VIDEO, () => {
-    console.log("🎥 鏡頭啟動成功");
-  });
+function startGame() {
+  const btn = select("#startBtn");
+  btn.hide(); // 隱藏按鈕
 
+  video = createCapture(VIDEO, () => {
+    console.log("📷 攝影機啟動");
+  });
   video.size(width, height);
-  video.hide(); // 可以先註解掉這行測試是否能看到鏡頭
-  isCameraOn = true;
-  startButton.hide();
+  video.hide();
 
   handpose = ml5.handpose(video, () => {
-    console.log("🤖 Handpose 模型載入完成");
+    console.log("🤖 handpose 模型已載入");
   });
 
   handpose.on("predict", results => {
     predictions = results;
   });
+
+  isStarted = true;
+  loop(); // 開始繪圖
 }
 
 function draw() {
-  background(230);
+  background(220);
 
-  if (!isCameraOn) {
-    fill(60);
-    textAlign(CENTER, CENTER);
-    textSize(22);
-    text("請點下方按鈕來啟用鏡頭", width / 2, height / 2);
-    return;
-  }
+  if (!isStarted) return;
 
-  // 顯示攝影機畫面
   image(video, 0, 0, width, height);
-
   drawQuestion();
   drawHand();
 }
@@ -81,8 +74,7 @@ function drawQuestion() {
 function drawHand() {
   if (predictions.length > 0) {
     let hand = predictions[0];
-    let indexTip = hand.landmarks[8];
-
+    let indexTip = hand.landmarks[8]; // index finger tip
     let x = indexTip[0];
     let y = indexTip[1];
 
@@ -98,20 +90,17 @@ function drawHand() {
 
       if (x > ox && x < ox + ow && y > oy && y < oy + oh) {
         selected = i;
-        if (i === correctAnswer) {
+        if (i === correctIndex) {
           fill(0, 255, 0);
-          textSize(24);
-          text("✅ 答對了！", 250, 400);
+          textSize(26);
+          text("✅ 答對了！", 250, 420);
         } else {
           fill(255, 0, 0);
-          textSize(24);
-          text("❌ 再試一次", 250, 400);
+          textSize(26);
+          text("❌ 再試一次", 250, 420);
         }
+        break;
       }
     }
   }
 }
-
-  }
-}
-
