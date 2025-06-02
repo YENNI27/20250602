@@ -6,13 +6,14 @@ let question = "以下哪一個是學習管理系統（LMS）？";
 let options = ["Zoom", "Moodle", "YouTube"];
 let correctIndex = 1;
 let selected = -1;
+let answered = false;
 
 let isStarted = false;
 
 function setup() {
   let canvas = createCanvas(640, 480);
   canvas.parent(document.body);
-  noLoop(); // 先暫停繪圖，直到按下按鈕後才開始
+  noLoop();
 
   const btn = select("#startBtn");
   btn.mousePressed(startGame);
@@ -20,11 +21,9 @@ function setup() {
 
 function startGame() {
   const btn = select("#startBtn");
-  btn.hide(); // 隱藏按鈕
+  btn.hide();
 
-  video = createCapture(VIDEO, () => {
-    console.log("📷 攝影機啟動");
-  });
+  video = createCapture(VIDEO);
   video.size(width, height);
   video.hide();
 
@@ -37,12 +36,11 @@ function startGame() {
   });
 
   isStarted = true;
-  loop(); // 開始繪圖
+  loop();
 }
 
 function draw() {
   background(220);
-
   if (!isStarted) return;
 
   image(video, 0, 0, width, height);
@@ -61,7 +59,7 @@ function drawQuestion() {
   for (let i = 0; i < options.length; i++) {
     let x = 50;
     let y = 120 + i * 80;
-    fill(i === selected ? "orange" : "white");
+    fill(i === selected ? color(255, 165, 0) : 255);
     stroke(0);
     rect(x, y, 540, 60, 10);
     fill(0);
@@ -69,12 +67,24 @@ function drawQuestion() {
     textSize(20);
     text(options[i], x + 20, y + 18);
   }
+
+  if (answered) {
+    fill(0, 255, 0);
+    textSize(26);
+    textAlign(CENTER);
+    text("✅ 答對了！", width / 2, 420);
+  } else if (selected >= 0 && selected !== correctIndex) {
+    fill(255, 0, 0);
+    textSize(26);
+    textAlign(CENTER);
+    text("❌ 再試一次", width / 2, 420);
+  }
 }
 
 function drawHand() {
-  if (predictions.length > 0) {
+  if (predictions.length > 0 && !answered) {
     let hand = predictions[0];
-    let indexTip = hand.landmarks[8]; // index finger tip
+    let indexTip = hand.landmarks[8];
     let x = indexTip[0];
     let y = indexTip[1];
 
@@ -91,13 +101,7 @@ function drawHand() {
       if (x > ox && x < ox + ow && y > oy && y < oy + oh) {
         selected = i;
         if (i === correctIndex) {
-          fill(0, 255, 0);
-          textSize(26);
-          text("✅ 答對了！", 250, 420);
-        } else {
-          fill(255, 0, 0);
-          textSize(26);
-          text("❌ 再試一次", 250, 420);
+          answered = true;
         }
         break;
       }
