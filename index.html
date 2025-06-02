@@ -2,11 +2,9 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
-  <title>手勢答題遊戲</title>
+  <title>簡易攝影機測試</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.8.0/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/ml5@2.3.0/dist/ml5.min.js"></script>
   <style>
     body {
       display: flex;
@@ -14,9 +12,10 @@
       align-items: center;
       background: #eee;
       font-family: "Noto Sans TC", sans-serif;
+      margin: 20px;
     }
     #startBtn {
-      margin: 20px;
+      margin-bottom: 15px;
       padding: 10px 20px;
       font-size: 20px;
       cursor: pointer;
@@ -28,7 +27,7 @@
   </style>
 </head>
 <body>
-  <button id="startBtn">開始遊戲</button>
+  <button id="startBtn">開始攝影機</button>
 
   <script src="sketch.js"></script>
 </body>
