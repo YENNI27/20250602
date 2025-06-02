@@ -31,9 +31,6 @@ function draw() {
   background(220);
 
   // 顯示攝影機影像
-  video = createCapture(VIDEO);
-  video.size(width, height);
-  video.hide();
   image(video, 0, 0, width, height);
 
   // 畫出目標
@@ -74,10 +71,6 @@ function checkCollision() {
     const indexFinger = hand.landmarks[8]; // 食指尖端
     const d = dist(indexFinger[0], indexFinger[1], targetX, targetY);
     return d < 30; // 如果距離小於目標半徑，則視為碰撞
-  }
-  return false;
-}
-
   }
   return false;
 }
