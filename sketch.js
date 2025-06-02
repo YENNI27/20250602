@@ -31,6 +31,9 @@ function draw() {
   background(220);
 
   // 顯示攝影機影像
+  video = createCapture(VIDEO);
+  video.size(width, height);
+  video.hide();
   image(video, 0, 0, width, height);
 
   // 畫出目標
