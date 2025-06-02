@@ -2,29 +2,25 @@ let video;
 let handpose;
 let predictions = [];
 
-let question = "以下哪一個是學習管理系統（LMS）？";
-let options = ["Zoom", "Moodle", "YouTube"];
+let question = "哪一個是教育科技常用的 LMS（學習管理系統）？";
+let options = ["YouTube", "Moodle", "LINE"];
 let correctIndex = 1;
 let selected = -1;
+let feedback = "";
 
 let isStarted = false;
 
 function setup() {
   let canvas = createCanvas(640, 480);
   canvas.parent(document.body);
-  noLoop(); // 初始不跑 draw
+  noLoop(); // 等按鈕按下才開始畫
 
   const btn = select("#startBtn");
-  if (btn) {
-    btn.mousePressed(startGame);
-  } else {
-    console.error("❌ 找不到按鈕");
-  }
+  btn.mousePressed(startGame);
 }
 
 function startGame() {
-  const btn = select("#startBtn");
-  btn.hide();
+  select("#startBtn").hide();
 
   video = createCapture(VIDEO, () => {
     console.log("📷 攝影機啟動");
@@ -33,7 +29,7 @@ function startGame() {
   video.hide();
 
   handpose = ml5.handpose(video, () => {
-    console.log("🧠 handpose 模型載入成功");
+    console.log("🤖 Handpose 載入完成");
   });
 
   handpose.on("predict", results => {
@@ -45,20 +41,20 @@ function startGame() {
 }
 
 function draw() {
-  background(240);
-
+  background(220);
   if (!isStarted) return;
 
   image(video, 0, 0, width, height);
   drawQuestion();
   drawHand();
+  showFeedback();
 }
 
 function drawQuestion() {
-  fill(0, 180);
+  fill(0, 160);
   rect(20, 20, width - 40, 80, 10);
   fill(255);
-  textSize(20);
+  textSize(18);
   textAlign(LEFT, TOP);
   text(question, 30, 30);
 
@@ -95,13 +91,9 @@ function drawHand() {
       if (x > ox && x < ox + ow && y > oy && y < oy + oh) {
         selected = i;
         if (i === correctIndex) {
-          fill(0, 200, 0);
-          textSize(26);
-          text("✅ 答對了！", 250, 420);
+          feedback = "✅ 答對了！Moodle 是一種 LMS";
         } else {
-          fill(200, 0, 0);
-          textSize(26);
-          text("❌ 再試一次", 250, 420);
+          feedback = "❌ 錯誤，再試一次";
         }
         break;
       }
@@ -109,6 +101,11 @@ function drawHand() {
   }
 }
 
-    image(video, 0, 0, width, height);
+function showFeedback() {
+  if (feedback) {
+    textSize(24);
+    fill(feedback.includes("✅") ? "green" : "red");
+    textAlign(CENTER, CENTER);
+    text(feedback, width / 2, height - 40);
   }
 }
