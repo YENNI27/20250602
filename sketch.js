@@ -11,45 +11,46 @@ let correctAnswer = 1;
 let selected = -1;
 
 function setup() {
-  let cnv = createCanvas(640, 480);
-  cnv.parent(document.body); // 讓 canvas 顯示在頁面中
+  const cnv = createCanvas(640, 480);
+  cnv.parent(document.body);
 
-  // 建立啟動按鈕
-  startButton = createButton("🎥 點我啟動鏡頭開始遊戲");
+  // 建立按鈕
+  startButton = createButton("📸 啟用鏡頭並開始遊戲");
   startButton.position(10, height + 20);
   startButton.mousePressed(startCamera);
 }
 
 function startCamera() {
-  video = createCapture(VIDEO);
+  video = createCapture(VIDEO, () => {
+    console.log("🎥 鏡頭啟動成功");
+  });
+
   video.size(width, height);
-  video.hide();
+  video.hide(); // 可以先註解掉這行測試是否能看到鏡頭
+  isCameraOn = true;
+  startButton.hide();
 
   handpose = ml5.handpose(video, () => {
-    console.log("Handpose 模型載入完成");
+    console.log("🤖 Handpose 模型載入完成");
   });
 
   handpose.on("predict", results => {
     predictions = results;
   });
-
-  isCameraOn = true;
-  startButton.hide(); // 避免重複按
 }
 
 function draw() {
   background(230);
 
   if (!isCameraOn) {
-    // 提示畫面
     fill(60);
     textAlign(CENTER, CENTER);
     textSize(22);
-    text("請點選下方按鈕來啟用鏡頭", width / 2, height / 2);
+    text("請點下方按鈕來啟用鏡頭", width / 2, height / 2);
     return;
   }
 
-  // 顯示鏡頭畫面
+  // 顯示攝影機畫面
   image(video, 0, 0, width, height);
 
   drawQuestion();
@@ -80,7 +81,7 @@ function drawQuestion() {
 function drawHand() {
   if (predictions.length > 0) {
     let hand = predictions[0];
-    let indexTip = hand.landmarks[8]; // 食指指尖
+    let indexTip = hand.landmarks[8];
 
     let x = indexTip[0];
     let y = indexTip[1];
@@ -108,6 +109,9 @@ function drawHand() {
         }
       }
     }
+  }
+}
+
   }
 }
 
